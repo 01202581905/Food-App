@@ -1,4 +1,4 @@
-const statisName = 'site-static';
+const statisName = 'site-static-v1.0.0';
 const assets = [
     '/',
     '/index.html',
@@ -31,6 +31,14 @@ self.addEventListener('install', (event) => {
 
 self.addEventListener('activate', (event) => {
     console.log('service worker  has been activated');
+    event.waitUntil(
+        caches.keys().then(keys => {
+            return Promise.all(keys
+                .filter(key => key !== statisName)
+                .map( key => caches.delete(key))
+            );
+        })
+    );
 });
 
 self.addEventListener('fetch', (event) => {

@@ -1,5 +1,5 @@
-const statisName = 'site-static-v1.0.2';
-const dynamicCache = 'site-dinamic-v1.0.2';
+const statisName = 'site-static-v1.0.3';
+const dynamicCache = 'site-dinamic-v1.0.3';
 const chormeExt = 'chrome-extension://';
 const assets = [
     '/',
@@ -10,7 +10,8 @@ const assets = [
     '/css/styles.css',
     '/css/materialize.min.css',
     '/img/dish.png',
-    'https://fonts.googleapis.com/icon?family=Material+Icons'
+    'https://fonts.googleapis.com/icon?family=Material+Icons',
+    '/pages/fallback.html'
 ];
 
 
@@ -36,11 +37,15 @@ self.addEventListener('activate', (event) => {
     event.waitUntil(
         caches.keys().then(keys => {
             return Promise.all(keys
-                .filter(key => key !== statisName)
+                .filter(key => key !== statisName && key !== dynamicCache)
                 .map( key => caches.delete(key))
             );
         })
     );
+
+    setTimeout(() =>{
+        fetch('/pages/fallback.html').then().catch();
+    }, 2000);
 });
 
 // will runing with per request
@@ -54,7 +59,10 @@ self.addEventListener('fetch', (event) => {
                     return caches.open(dynamicCache).then(cache => {
                         cache.put(event.request.url, fetchRes.clone());
                         return fetchRes;
-                    })
+                    });
+                })
+                .catch(() => {
+                    return caches.match('/pages/fallback.html');
                 });
             })
         );

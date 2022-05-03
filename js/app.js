@@ -15,13 +15,13 @@ if('serviceWorker' in navigator) {
 
 // default, granted, denied
 const pushNotification = () => {
-    const notification = new Notification("Test notification !", {
-        body: "Can you see me ?",
+    const notification = new Notification("It just is test notification, Don't worry about it !", {
+        body: "Thanks for visit my site",
         icon: "../img/dish.png"
     });
 
     notification.onclick = () => {
-        window.location.href = "https://www.youtube.com/watch?v=Jncoj-Gvh9o";
+        // window.location.href = "https://www.youtube.com/watch?v=Jncoj-Gvh9o";
     };
 };
 

@@ -1,5 +1,5 @@
-const statisName = 'site-static-v1.0.3';
-const dynamicCache = 'site-dinamic-v1.0.3';
+const statisName = 'site-static-v1.0.4';
+const dynamicCache = 'site-dinamic-v1.0.4';
 const chormeExt = 'chrome-extension://';
 const assets = [
     '/',
@@ -14,7 +14,15 @@ const assets = [
     '/pages/fallback.html'
 ];
 
-
+const limitCaches = ( name, size) => {
+    caches.open(name).then(cache => {
+        cache.keys().then(keys => {
+            if(keys.length > size) {
+                cache.delete(keys[0]).then(limitCaches(name, size));
+            }
+        })
+    });
+};
 /*
 * licycle of service worker
 * register service worker file
@@ -22,7 +30,7 @@ const assets = [
 */
 
 self.addEventListener('install', (event) => {
-    // console.log('service worker has been installed');
+    // service worker has been installed
     event.waitUntil(caches.open(statisName).then((cache) => {
         cache.addAll(assets);
     }).catch(() => {
@@ -33,7 +41,7 @@ self.addEventListener('install', (event) => {
 
 // when this serive worker active
 self.addEventListener('activate', (event) => {
-    // console.log('service worker  has been activated');
+    // service worker  has been activated
     event.waitUntil(
         caches.keys().then(keys => {
             return Promise.all(keys
@@ -58,11 +66,13 @@ self.addEventListener('fetch', (event) => {
                 return cacheRes || fetch(event.request).then(fetchRes => {
                     return caches.open(dynamicCache).then(cache => {
                         cache.put(event.request.url, fetchRes.clone());
+                        limitCaches(dynamicCache, 15);
                         return fetchRes;
                     });
                 })
                 .catch(() => {
-                    return caches.match('/pages/fallback.html');
+                    if(event.request.url.indexOf('.html'))
+                        return caches.match('/pages/fallback.html');
                 });
             })
         );

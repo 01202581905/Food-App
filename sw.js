@@ -1,5 +1,5 @@
-const statisName = 'site-static-v1.0.5';
-const dynamicCache = 'site-dinamic-v1.0.5';
+const statisName = 'site-static-v1.0.6';
+const dynamicCache = 'site-dinamic-v1.0.6';
 const chormeExt = 'chrome-extension://';
 const assets = [
     '/',

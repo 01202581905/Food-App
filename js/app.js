@@ -16,13 +16,20 @@ if('serviceWorker' in navigator) {
 // default, granted, denied
 const pushNotification = () => {
     const notification = new Notification("It just is test notification, Don't worry about it !", {
-        body: "Thanks for visit my site",
-        icon: "../img/dish.png"
+        body: "Thanks for visit my site", // text for body
+        icon: "../img/dish.png", // icon of notficaiton
+        // image to display banner image
+        image: "https://scontent.fdad3-6.fna.fbcdn.net/v/t39.30808-6/272132934_614582622965361_6091361890239161660_n.jpg?_nc_cat=107&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=v2r2IeyZhToAX9j-nL5&_nc_ht=scontent.fdad3-6.fna&oh=00_AT--SwltdI1ToVDjlDTCCvNgPVELeBXdVQOv-Supbi9MAg&oe=62761350",
+        silent: false, // setting push notification with sound, default false
+        vibrate: [200, 100, 300] // setting vibrate for notificaition
+
     });
 
     notification.onclick = () => {
-        // window.location.href = "https://www.youtube.com/watch?v=Jncoj-Gvh9o";
+       // TODO href
     };
+
+    // notification.close(); close, remove the previous notification
 };
 
 if(Notification.permission === 'granted') {

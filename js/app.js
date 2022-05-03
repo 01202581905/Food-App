@@ -12,3 +12,25 @@ if('serviceWorker' in navigator) {
     // console.log("Browser not support serviceWorker");
     // do something when browser can't support service worker
 }
+
+// default, granted, denied
+const pushNotification = () => {
+    const notification = new Notification("Test notification !", {
+        body: "Can you see me ?",
+        icon: "../img/dish.png"
+    });
+
+    notification.onclick = () => {
+        window.location.href = "https://www.youtube.com/watch?v=Jncoj-Gvh9o";
+    };
+};
+
+if(Notification.permission === 'granted') {
+    pushNotification();
+} else {
+    Notification.requestPermission().then( permission => {
+        if(permission  === 'granted') {
+            pushNotification();
+        }
+    });
+}
